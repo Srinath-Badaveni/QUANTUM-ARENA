@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config(); // Load environment variables
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -256,12 +256,29 @@ app.get("/api/admin/registrations", verifyAdminToken, async (req, res) => {
 });
 
 // 7. Verification Portal: Update registration status
+// Configure Nodemailer to force IPv4 to avoid Render's IPv6 connectivity issues with Gmail SMTP
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  requireTLS: true,
+  family: 4, // Force IPv4
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+// Verify SMTP connection
+transporter.verify((error, success) => {
+  if (error) {
+    console.log("SMTP Error:", error);
+  } else {
+    console.log("SMTP Server Ready");
+  }
 });
 
 app.put("/api/admin/registrations/:id", verifyAdminToken, async (req, res) => {
@@ -316,13 +333,12 @@ app.put("/api/admin/registrations/:id", verifyAdminToken, async (req, res) => {
         `,
       };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error("Error sending confirmation email:", error);
-        } else {
-          console.log("Confirmation email sent to:", updated.email);
-        }
-      });
+      try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Confirmation email sent:", info.response);
+      } catch (error) {
+        console.error("Error sending confirmation email:", error);
+      }
     }
 
     res.status(200).json(updated);
