@@ -1131,3 +1131,140 @@ section { padding: 100px 0; }
   .about-stats { grid-template-columns: repeat(2, 1fr); }
   .footer-bottom { flex-direction: column; gap: 12px; }
 }
+
+/* TREASURER DASHBOARD STYLES */
+.treasurer-container {
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  padding: 20px;
+  font-family: var(--font-body);
+}
+
+.login-box {
+  max-width: 400px;
+  margin: 100px auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.t-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.t-logo {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.t-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .t-grid { grid-template-columns: 1fr; }
+}
+
+.t-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.t-input {
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #333;
+  color: #fff;
+  padding: 10px;
+  font-family: var(--font-mono);
+  margin-bottom: 15px;
+}
+
+.t-input:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 10px rgba(225,6,0,0.2);
+}
+
+.split-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.split-cb {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.ledger-stat {
+  font-size: 24px;
+  font-family: var(--font-display);
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed #333;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.balance-item {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  padding: 8px 0;
+  border-bottom: 1px solid #222;
+}
+
+.balance-note {
+  font-size: 12px;
+  color: #888;
+  margin-top: 10px;
+}
+
+.t-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.t-table th, .t-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #222;
+}
+
+.t-table th {
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+}
+
+.del-btn {
+  background: transparent;
+  color: var(--red);
+  border: 1px solid var(--red);
+  cursor: pointer;
+  padding: 2px 8px;
+}
+
+.del-btn:hover {
+  background: var(--red);
+  color: #fff;
+}
