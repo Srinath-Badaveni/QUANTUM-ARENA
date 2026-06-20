@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const MOCK_USER = {
-  username: 'rajesh',
-  password: '123'
-};
+
 
 export default function Treasurer() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,18 +20,46 @@ export default function Treasurer() {
     const auth = localStorage.getItem('treasurer_auth');
     if (auth === 'true') setIsAuthenticated(true);
     
-    const savedExp = localStorage.getItem('treasurer_expenses');
-    if (savedExp) setExpenses(JSON.parse(savedExp));
+    fetchLedger();
   }, []);
 
-  const handleLogin = (e) => {
+  const fetchLedger = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${apiUrl}/treasurer/ledger`, {
+        headers: {
+          'Authorization': 'Bearer treasurer-authorized-token'
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setExpenses(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch ledger:', err);
+    }
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (username.toLowerCase() === MOCK_USER.username && password === MOCK_USER.password) {
-      setIsAuthenticated(true);
-      localStorage.setItem('treasurer_auth', 'true');
-      setError('');
-    } else {
-      setError('ACCESS DENIED: Invalid credentials');
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${apiUrl}/treasurer/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      
+      if (res.ok) {
+        setIsAuthenticated(true);
+        localStorage.setItem('treasurer_auth', 'true');
+        setError('');
+      } else {
+        const data = await res.json();
+        setError(`ACCESS DENIED: ${data.error || 'Invalid credentials'}`);
+      }
+    } catch (err) {
+      setError('ACCESS DENIED: Server unreachable');
     }
   };
 
@@ -43,30 +68,52 @@ export default function Treasurer() {
     localStorage.removeItem('treasurer_auth');
   };
 
-  const addExpense = (e) => {
+  const addExpense = async (e) => {
     e.preventDefault();
     if (!desc || !amount) return;
     
     const newExp = {
-      id: Date.now(),
-      date: new Date().toLocaleDateString(),
-      desc,
+      description: desc,
       amount: parseFloat(amount),
-      paidBy
+      type: 'EXPENSE',
+      splitDetails: {}
     };
     
-    const updated = [newExp, ...expenses];
-    setExpenses(updated);
-    localStorage.setItem('treasurer_expenses', JSON.stringify(updated));
-    
-    setDesc('');
-    setAmount('');
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${apiUrl}/treasurer/transaction`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer treasurer-authorized-token'
+        },
+        body: JSON.stringify(newExp)
+      });
+      if (res.ok) {
+        fetchLedger();
+        setDesc('');
+        setAmount('');
+      }
+    } catch (err) {
+      console.error('Failed to add expense:', err);
+    }
   };
 
-  const deleteExpense = (id) => {
-    const updated = expenses.filter(e => e.id !== id);
-    setExpenses(updated);
-    localStorage.setItem('treasurer_expenses', JSON.stringify(updated));
+  const deleteExpense = async (id) => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${apiUrl}/treasurer/transaction/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer treasurer-authorized-token'
+        }
+      });
+      if (res.ok) {
+        fetchLedger();
+      }
+    } catch (err) {
+      console.error('Failed to delete expense:', err);
+    }
   };
 
   let totalExpenses = 0;
@@ -105,7 +152,7 @@ export default function Treasurer() {
               />
               <button type="submit" className="btn-primary full-width">AUTHENTICATE</button>
             </form>
-            <div className="hint">Hint: rajesh / 123</div>
+            <div className="hint">Set your credentials securely in your backend .env file</div>
           </div>
         </div>
       </div>
@@ -170,12 +217,12 @@ export default function Treasurer() {
             </thead>
             <tbody>
               {expenses.map(e => (
-                <tr key={e.id}>
-                  <td>{e.date}</td>
-                  <td>{e.desc}</td>
-                  <td className="green">{e.paidBy}</td>
+                <tr key={e._id}>
+                  <td>{new Date(e.date).toLocaleDateString()}</td>
+                  <td>{e.description}</td>
+                  <td className="green">Treasury</td>
                   <td className="red">₹{e.amount}</td>
-                  <td><button onClick={() => deleteExpense(e.id)} className="del-btn">X</button></td>
+                  <td><button onClick={() => deleteExpense(e._id)} className="del-btn">X</button></td>
                 </tr>
               ))}
             </tbody>

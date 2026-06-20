@@ -174,7 +174,13 @@ export const EVENT = {
       "AI / Machine Learning", "Cloud Computing", "Cybersecurity"
     ],
     sizes: [
-      "2 Members", "3 Members", "4 Members"
+      "1 Member", "2 Members", "3 Members", "4 Members"
+    ],
+    branches: [
+      "CSE", "CSD", "CSM", "IT", "CIVIL", "MECH", "ECE", "EEE", "Other"
+    ],
+    years: [
+      "1st", "2nd", "3rd", "4th", "Diploma", "Graduated"
     ]
   }
 };
