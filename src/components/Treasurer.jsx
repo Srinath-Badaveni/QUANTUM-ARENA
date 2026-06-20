@@ -17,18 +17,19 @@ export default function Treasurer() {
   const members = ['Rajesh', 'Ushaswini', 'Prasanna', 'Navadeep'];
 
   useEffect(() => {
-    const auth = localStorage.getItem('treasurer_auth');
-    if (auth === 'true') setIsAuthenticated(true);
+    const token = localStorage.getItem('treasurer_token');
+    if (token) setIsAuthenticated(true);
     
     fetchLedger();
   }, []);
 
   const fetchLedger = async () => {
     try {
+      const token = localStorage.getItem('treasurer_token');
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${apiUrl}/treasurer/ledger`, {
         headers: {
-          'Authorization': 'Bearer treasurer-authorized-token'
+          'Authorization': `Bearer ${token}`
         }
       });
       if (res.ok) {
@@ -51,8 +52,9 @@ export default function Treasurer() {
       });
       
       if (res.ok) {
+        const data = await res.json();
         setIsAuthenticated(true);
-        localStorage.setItem('treasurer_auth', 'true');
+        localStorage.setItem('treasurer_token', data.token);
         setError('');
       } else {
         const data = await res.json();
@@ -65,7 +67,7 @@ export default function Treasurer() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    localStorage.removeItem('treasurer_auth');
+    localStorage.removeItem('treasurer_token');
   };
 
   const addExpense = async (e) => {
@@ -76,16 +78,18 @@ export default function Treasurer() {
       description: desc,
       amount: parseFloat(amount),
       type: 'EXPENSE',
+      paidBy: paidBy,
       splitDetails: {}
     };
     
     try {
+      const token = localStorage.getItem('treasurer_token');
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${apiUrl}/treasurer/transaction`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer treasurer-authorized-token'
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(newExp)
       });
@@ -101,11 +105,12 @@ export default function Treasurer() {
 
   const deleteExpense = async (id) => {
     try {
+      const token = localStorage.getItem('treasurer_token');
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${apiUrl}/treasurer/transaction/${id}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': 'Bearer treasurer-authorized-token'
+          'Authorization': `Bearer ${token}`
         }
       });
       if (res.ok) {
@@ -220,7 +225,7 @@ export default function Treasurer() {
                 <tr key={e._id}>
                   <td>{new Date(e.date).toLocaleDateString()}</td>
                   <td>{e.description}</td>
-                  <td className="green">Treasury</td>
+                  <td className="green">{e.paidBy || 'Treasury'}</td>
                   <td className="red">₹{e.amount}</td>
                   <td><button onClick={() => deleteExpense(e._id)} className="del-btn">X</button></td>
                 </tr>

@@ -6,6 +6,7 @@ const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 
 const Registration = require("./models/Registration");
 const Transaction = require("./models/Transaction");
@@ -134,21 +135,37 @@ app.post(
 // Middleware: Treasurer Auth
 const verifyTreasurerToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  if (authHeader && authHeader === "Bearer treasurer-authorized-token") {
-    next();
-  } else {
-    res.status(401).json({ error: "Unauthorized access" });
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (decoded.role === 'treasurer') {
+        req.user = decoded;
+        return next();
+      }
+    } catch (err) {
+      // invalid token
+    }
   }
+  res.status(401).json({ error: "Unauthorized access" });
 };
 
 // Middleware: Admin Auth
 const verifyAdminToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  if (authHeader && authHeader === "Bearer admin-authorized-token") {
-    next();
-  } else {
-    res.status(401).json({ error: "Unauthorized access" });
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (decoded.role === 'admin') {
+        req.user = decoded;
+        return next();
+      }
+    } catch (err) {
+      // invalid token
+    }
   }
+  res.status(401).json({ error: "Unauthorized access" });
 };
 
 // 2. Money Management: Treasurer Login
@@ -161,9 +178,8 @@ app.post("/api/treasurer/login", (req, res) => {
     username.toLowerCase() === validUser.toLowerCase() &&
     password === validPass
   ) {
-    res
-      .status(200)
-      .json({ success: true, token: "treasurer-authorized-token" });
+    const token = jwt.sign({ role: 'treasurer' }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    res.status(200).json({ success: true, token });
   } else {
     res.status(401).json({ error: "Invalid credentials" });
   }
@@ -185,11 +201,12 @@ app.post(
   verifyTreasurerToken,
   async (req, res) => {
     try {
-      const { description, amount, type, splitDetails } = req.body;
+      const { description, amount, type, paidBy, splitDetails } = req.body;
       const newTransaction = new Transaction({
         description,
         amount,
         type,
+        paidBy,
         splitDetails,
       });
       await newTransaction.save();
@@ -221,7 +238,8 @@ app.post("/api/admin/login", (req, res) => {
   const validPass = process.env.ADMIN_PASSWORD;
 
   if (username === validUser && password === validPass) {
-    res.status(200).json({ success: true, token: "admin-authorized-token" });
+    const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    res.status(200).json({ success: true, token });
   } else {
     res.status(401).json({ error: "Invalid credentials" });
   }
