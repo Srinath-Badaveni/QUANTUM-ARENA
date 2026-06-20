@@ -156,6 +156,80 @@ body {
     radial-gradient(ellipse at 50% 100%, rgba(232,0,15,0.08) 0%, transparent 50%);
 }
 
+/* SQUID SHAPES (CSS DESIGN) */
+.squid-shapes-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1; /* Below content, above grid */
+  pointer-events: none;
+  opacity: 0.25; /* Blends into background */
+}
+
+.squid-shape {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shape-svg {
+  width: 180px;
+  height: 180px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 12;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 15px var(--red)) drop-shadow(0 0 30px var(--red-dim));
+  animation: pulse-glow 3s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% { filter: drop-shadow(0 0 10px var(--red)) drop-shadow(0 0 20px rgba(232,0,15,0.5)); stroke: #eee; }
+  100% { filter: drop-shadow(0 0 25px var(--red)) drop-shadow(0 0 50px rgba(232,0,15,0.8)); stroke: #fff; }
+}
+
+.squid-square .shape-svg { width: 220px; height: 220px; }
+
+/* Audio Visualizer around Square */
+.audio-visualizer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.vis-bar {
+  position: absolute;
+  width: 4px;
+  height: 30px;
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red);
+  bottom: 50%;
+  transform-origin: bottom center;
+  transform: rotate(calc(var(--i) * (360deg / 32))) translateY(140px);
+  animation: vis-bounce 1.5s infinite ease-in-out alternate;
+  animation-delay: calc(sin(var(--i)) * -2s);
+}
+
+@keyframes vis-bounce {
+  0% { height: 10px; background: rgba(232,0,15,0.5); }
+  50% { height: 40px; background: var(--red); }
+  100% { height: 15px; background: rgba(232,0,15,0.7); }
+}
+
 /* HUD panels */
 .hud {
   position: absolute;
@@ -1008,42 +1082,50 @@ section { padding: 100px 0; }
 .coordinators { background: var(--bg); padding: 80px 0; }
 .coord-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
 }
 .coord-group {
   border: 1px solid var(--border);
-  padding: 24px 20px;
+  padding: 36px 30px;
   background: var(--surface);
+  transition: all 0.3s ease;
+}
+.coord-group:hover {
+  border-color: var(--border-red);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 .coord-group-title {
   font-family: var(--font-display);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.15em;
   color: var(--red);
-  margin-bottom: 14px;
-  padding-bottom: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
 .coord-name {
   font-family: var(--font-body);
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: var(--text);
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 .coord-sub {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   color: var(--text-faint);
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 .coord-num {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   color: var(--red);
   display: block;
-  margin-top: 2px;
+  margin-top: 4px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
 }
 
 /* ── FOOTER ── */
@@ -1268,3 +1350,4 @@ section { padding: 100px 0; }
   background: var(--red);
   color: #fff;
 }
+

@@ -6,6 +6,29 @@ export default function Hero() {
       <div className="hero-bg-grid"></div>
       <div className="circuit-lines"></div>
 
+      <div className="squid-shapes-container">
+        <div className="squid-shape squid-circle">
+          <svg viewBox="0 0 100 100" className="shape-svg">
+            <circle cx="50" cy="50" r="40" />
+          </svg>
+        </div>
+        <div className="squid-shape squid-square">
+          <div className="audio-visualizer">
+            {[...Array(32)].map((_, i) => (
+              <div key={i} className="vis-bar" style={{ "--i": i }}></div>
+            ))}
+          </div>
+          <svg viewBox="0 0 100 100" className="shape-svg">
+            <rect x="15" y="15" width="70" height="70" />
+          </svg>
+        </div>
+        <div className="squid-shape squid-triangle">
+          <svg viewBox="0 0 100 100" className="shape-svg">
+            <polygon points="50,10 90,85 10,85" />
+          </svg>
+        </div>
+      </div>
+
       <div className="hud hud-left">
         {EVENT.bootLines.map((line, i) => (
           <div key={i} className="hud-line">
@@ -50,7 +73,7 @@ export default function Hero() {
             QU<span className="u-special">Δ</span>NTUM
           </span>
           <span className="title-arena">
-            AREN<span className="a-special">Δ</span>
+            ΔREN<span className="a-special">Δ</span>
           </span>
         </h1>
         <div className="hero-sub">
