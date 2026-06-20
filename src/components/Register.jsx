@@ -56,6 +56,10 @@ export default function Register() {
               <span className="fee-label">REGISTRATION FEE</span>
               <span className="fee-amt">{EVENT.registration.currency}{EVENT.registration.fee} <span className="per">/ {EVENT.registration.per}</span></span>
             </div>
+            <div className="reg-qr" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              <img src="/image.png" alt="Registration QR Code" style={{ width: '100%', maxWidth: '200px', border: '2px solid var(--primary)', borderRadius: '8px' }} />
+              <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-dim)' }}>Scan to pay & register</div>
+            </div>
             <div className="reg-contacts">
               <div className="contact-title">{EVENT.queries.title}</div>
               {EVENT.queries.contacts.map((contact, i) => (
