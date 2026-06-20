@@ -11,12 +11,13 @@ export default function Verification() {
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [currentTab, setCurrentTab] = useState('PENDING');
 
   useEffect(() => {
-    const auth = localStorage.getItem('admin_auth');
-    if (auth === 'true') setIsAuthenticated(true);
+    const token = localStorage.getItem('admin_token');
+    if (token) setIsAuthenticated(true);
     
-    if (isAuthenticated || auth === 'true') {
+    if (isAuthenticated || token) {
       fetchRegistrations();
     }
   }, [isAuthenticated]);
@@ -24,10 +25,11 @@ export default function Verification() {
   const fetchRegistrations = async () => {
     try {
       setLoading(true);
+      const token = localStorage.getItem('admin_token');
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${apiUrl}/admin/registrations`, {
         headers: {
-          'Authorization': 'Bearer admin-authorized-token'
+          'Authorization': `Bearer ${token}`
         }
       });
       if (res.ok) {
@@ -52,8 +54,9 @@ export default function Verification() {
       });
       
       if (res.ok) {
+        const data = await res.json();
         setIsAuthenticated(true);
-        localStorage.setItem('admin_auth', 'true');
+        localStorage.setItem('admin_token', data.token);
         setError('');
       } else {
         const data = await res.json();
@@ -66,17 +69,18 @@ export default function Verification() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    localStorage.removeItem('admin_auth');
+    localStorage.removeItem('admin_token');
   };
 
   const updateStatus = async (id, newStatus) => {
     try {
+      const token = localStorage.getItem('admin_token');
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${apiUrl}/admin/registrations/${id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer admin-authorized-token'
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ status: newStatus })
       });
@@ -138,10 +142,17 @@ export default function Verification() {
 
       <div className="t-panel" style={{marginTop: '20px'}}>
         <div className="panel-title">// TEAM REGISTRATIONS</div>
+        
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>
+          <button onClick={() => setCurrentTab('PENDING')} className="btn-ghost" style={{ padding: '5px 15px', background: currentTab === 'PENDING' ? 'var(--red)' : 'transparent', color: currentTab === 'PENDING' ? '#fff' : 'var(--text)', borderColor: currentTab === 'PENDING' ? 'var(--red)' : 'var(--border)' }}>PENDING</button>
+          <button onClick={() => setCurrentTab('APPROVED')} className="btn-ghost" style={{ padding: '5px 15px', background: currentTab === 'APPROVED' ? '#0f0' : 'transparent', color: currentTab === 'APPROVED' ? '#000' : 'var(--text)', borderColor: currentTab === 'APPROVED' ? '#0f0' : 'var(--border)' }}>APPROVED</button>
+          <button onClick={() => setCurrentTab('REJECTED')} className="btn-ghost" style={{ padding: '5px 15px', background: currentTab === 'REJECTED' ? '#f00' : 'transparent', color: currentTab === 'REJECTED' ? '#fff' : 'var(--text)', borderColor: currentTab === 'REJECTED' ? '#f00' : 'var(--border)' }}>REJECTED</button>
+        </div>
+
         {loading ? (
           <div style={{color: '#555', fontStyle:'italic'}}>Loading records...</div>
-        ) : registrations.length === 0 ? (
-          <div style={{color: '#555', fontStyle:'italic'}}>No registrations received yet.</div>
+        ) : registrations.filter(r => r.status === currentTab).length === 0 ? (
+          <div style={{color: '#555', fontStyle:'italic'}}>No {currentTab.toLowerCase()} registrations found.</div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <table className="t-table">
@@ -157,7 +168,7 @@ export default function Verification() {
                 </tr>
               </thead>
               <tbody>
-                {registrations.map(reg => (
+                {registrations.filter(r => r.status === currentTab).map(reg => (
                   <tr key={reg._id} style={{ background: reg.status === 'APPROVED' ? 'rgba(0,255,0,0.05)' : reg.status === 'REJECTED' ? 'rgba(255,0,0,0.05)' : 'transparent' }}>
                     <td style={{ fontWeight: 'bold' }}>{reg.teamName}</td>
                     <td>

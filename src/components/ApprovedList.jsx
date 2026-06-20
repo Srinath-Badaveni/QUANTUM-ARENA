@@ -6,8 +6,8 @@ export default function ApprovedList() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const auth = localStorage.getItem('admin_auth');
-    if (auth !== 'true') {
+    const token = localStorage.getItem('admin_token');
+    if (!token) {
       const verifyHash = import.meta.env.VITE_VERIFY_HASH || '#verify';
       window.location.hash = verifyHash;
     } else {
@@ -17,10 +17,11 @@ export default function ApprovedList() {
 
   const fetchApprovedRegistrations = async () => {
     try {
+      const token = localStorage.getItem('admin_token');
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${apiUrl}/admin/registrations`, {
         headers: {
-          'Authorization': 'Bearer admin-authorized-token'
+          'Authorization': `Bearer ${token}`
         }
       });
       if (res.ok) {
