@@ -5,7 +5,6 @@ const cors = require("cors");
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
-const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 
 const Registration = require("./models/Registration");
@@ -256,30 +255,6 @@ app.get("/api/admin/registrations", verifyAdminToken, async (req, res) => {
 });
 
 // 7. Verification Portal: Update registration status
-// Configure Nodemailer to force IPv4 to avoid Render's IPv6 connectivity issues with Gmail SMTP
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  family: 4, // Force IPv4
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false
-  }
-});
-
-// Verify SMTP connection
-transporter.verify((error, success) => {
-  if (error) {
-    console.log("SMTP Error:", error);
-  } else {
-    console.log("SMTP Server Ready");
-  }
-});
 
 app.put("/api/admin/registrations/:id", verifyAdminToken, async (req, res) => {
   try {
@@ -294,52 +269,8 @@ app.put("/api/admin/registrations/:id", verifyAdminToken, async (req, res) => {
       { returnDocument: "after" },
     );
 
-    // Send confirmation email if approved
-    if (
-      status === "APPROVED" &&
-      process.env.EMAIL_USER &&
-      process.env.EMAIL_PASS
-    ) {
-      const mailOptions = {
-        from: `"Quantum Arena 2026" <${process.env.EMAIL_USER}>`,
-        to: updated.email,
-        subject: "Registration Confirmed: Quantum Arena Hackathon 2026 🚀",
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-            <h2 style="color: #e63946;">Congratulations, ${updated.leaderName}!</h2>
-            <p>Your team <strong>${updated.teamName}</strong> has been successfully verified and approved for <strong>Quantum Arena 2026</strong>.</p>
-            
-            <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #e63946; margin: 20px 0;">
-              <h3 style="margin-top: 0;">Event Details</h3>
-              <ul style="list-style-type: none; padding-left: 0;">
-                <li>📅 <strong>Date:</strong> 06th - 08th August 2026</li>
-                <li>⏱ <strong>Duration:</strong> 36 Hours (Non-stop)</li>
-                <li>📍 <strong>Venue:</strong> TKR College of Engineering & Technology, Dept. of CSE</li>
-              </ul>
-            </div>
+    // Email sending is now handled by a separate local service
 
-            <h3>Important Instructions</h3>
-            <ul>
-              <li>Please carry your original College ID cards.</li>
-              <li>Bring your laptops, chargers, and any required hardware/extensions.</li>
-              <li>Food and accommodation will be provided at the venue.</li>
-              <li>Ensure your team reports to the registration desk by 9:00 AM on 06th August.</li>
-            </ul>
-
-            <p>If you have any queries, please reply to this email or contact the coordinators listed on the website.</p>
-            
-            <p>See you in the Arena!<br><strong>- Team Quantum Arena</strong></p>
-          </div>
-        `,
-      };
-
-      try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log("Confirmation email sent:", info.response);
-      } catch (error) {
-        console.error("Error sending confirmation email:", error);
-      }
-    }
 
     res.status(200).json(updated);
   } catch (error) {

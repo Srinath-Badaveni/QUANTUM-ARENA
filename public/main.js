@@ -20,17 +20,6 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', () => navLinks.classList.remove('open'));
 });
 
-// ── FAQ accordion ──
-document.querySelectorAll('.faq-q').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-    // Close all
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    // Open clicked if was closed
-    if (!isOpen) item.classList.add('open');
-  });
-});
 
 // ── Timeline date tab ──
 document.querySelectorAll('.tdate').forEach(btn => {
@@ -51,7 +40,7 @@ function handleRegister(e) {
 
 // ── Intersection Observer — scroll reveal ──
 const revealEls = document.querySelectorAll(
-  '.track-card, .tl-item, .prize-card, .rule-item, .faq-item, .stat-box, .coord-group'
+  '.track-card, .tl-item, .prize-card, .rule-item, .stat-box, .coord-group'
 );
 
 const observer = new IntersectionObserver((entries) => {

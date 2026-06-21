@@ -14,6 +14,7 @@ const registrationSchema = new mongoose.Schema({
   paymentId: { type: String, required: true },
   idPhotoUrl: { type: String, required: true },
   status: { type: String, enum: ['PENDING', 'APPROVED', 'REJECTED'], default: 'PENDING' },
+  emailSent: { type: Boolean, default: false },
   timestamp: { type: Date, default: Date.now }
 });
 
