@@ -143,7 +143,7 @@ export default function Verification() {
       <div className="t-panel" style={{marginTop: '20px'}}>
         <div className="panel-title">// TEAM REGISTRATIONS</div>
         
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px', borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>
           <button onClick={() => setCurrentTab('PENDING')} className="btn-ghost" style={{ padding: '5px 15px', background: currentTab === 'PENDING' ? 'var(--red)' : 'transparent', color: currentTab === 'PENDING' ? '#fff' : 'var(--text)', borderColor: currentTab === 'PENDING' ? 'var(--red)' : 'var(--border)' }}>PENDING</button>
           <button onClick={() => setCurrentTab('APPROVED')} className="btn-ghost" style={{ padding: '5px 15px', background: currentTab === 'APPROVED' ? '#0f0' : 'transparent', color: currentTab === 'APPROVED' ? '#000' : 'var(--text)', borderColor: currentTab === 'APPROVED' ? '#0f0' : 'var(--border)' }}>APPROVED</button>
           <button onClick={() => setCurrentTab('REJECTED')} className="btn-ghost" style={{ padding: '5px 15px', background: currentTab === 'REJECTED' ? '#f00' : 'transparent', color: currentTab === 'REJECTED' ? '#fff' : 'var(--text)', borderColor: currentTab === 'REJECTED' ? '#f00' : 'var(--border)' }}>REJECTED</button>

@@ -127,13 +127,13 @@ body {
 
 /* ── HERO ── */
 .hero {
-  min-height: 100vh;
+  min-height: 90vh;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 100px 24px 60px;
+  padding: 80px 24px 30px;
 }
 
 .hero-bg-grid {
@@ -508,9 +508,17 @@ body {
 @keyframes fadeUpDown { 0%,100%{opacity:0.4} 50%{opacity:1} }
 
 /* ── SECTION COMMON ── */
-section { padding: 100px 0; }
+section { 
+  padding: 40px 0; 
+}
+section:nth-child(even) {
+  background-image: 
+    linear-gradient(rgba(232,0,15,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,0,15,0.015) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
 .section-header {
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   position: relative;
 }
 .section-tag {
@@ -535,7 +543,7 @@ section { padding: 100px 0; }
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: 40px;
   align-items: start;
 }
 .about-text p {
@@ -944,7 +952,7 @@ section { padding: 100px 0; }
 .register-grid {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
-  gap: 60px;
+  gap: 40px;
   align-items: start;
 }
 .reg-fee {
@@ -1079,7 +1087,7 @@ section { padding: 100px 0; }
 .success-msg { font-size: 0.9rem; color: var(--text-dim); }
 
 /* ── COORDINATORS ── */
-.coordinators { background: var(--bg); padding: 80px 0; }
+.coordinators { background: var(--bg); }
 .coord-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1183,6 +1191,11 @@ section { padding: 100px 0; }
   .prize-card { max-width: 100%; width: 100%; }
   .register-grid { grid-template-columns: 1fr; }
   .coord-grid { grid-template-columns: repeat(2, 1fr); }
+  
+  .squid-shape .shape-svg { width: 120px; height: 120px; }
+  .squid-square .shape-svg { width: 140px; height: 140px; }
+  .audio-visualizer { width: 220px; height: 220px; }
+  .vis-bar { transform: rotate(calc(var(--i) * (360deg / 32))) translateY(90px); }
 }
 
 @media (max-width: 640px) {
@@ -1201,8 +1214,10 @@ section { padding: 100px 0; }
   .hero { padding-top: 80px; }
   .title-quantum { font-size: 3rem; }
   .title-arena { font-size: 3.5rem; }
-  .hero-dates { flex-wrap: wrap; }
-  .hero-ctas { flex-direction: column; align-items: center; }
+  .hero-dates { flex-wrap: wrap; justify-content: center; gap: 20px; }
+  .date-divider { display: none; }
+  .hero-ctas { flex-direction: column; align-items: center; width: 100%; }
+  .hero-ctas .btn-primary, .hero-ctas .btn-ghost { width: 100%; text-align: center; }
   .tracks-grid { grid-template-columns: 1fr; }
   .rules-grid { grid-template-columns: 1fr; }
   .timeline-items { padding-left: 60px; }
@@ -1212,6 +1227,13 @@ section { padding: 100px 0; }
   .coord-grid { grid-template-columns: 1fr; }
   .about-stats { grid-template-columns: repeat(2, 1fr); }
   .footer-bottom { flex-direction: column; gap: 12px; }
+  
+  section { padding: 30px 0; }
+  .section-header { margin-bottom: 20px; }
+  
+  .squid-shapes-container { flex-direction: column; gap: 40px; opacity: 0.15; padding-top: 60px; }
+  .t-nav { flex-direction: column; gap: 15px; text-align: center; }
+  .t-nav > div { flex-wrap: wrap; justify-content: center; }
 }
 
 /* TREASURER DASHBOARD STYLES */
@@ -1325,6 +1347,17 @@ section { padding: 100px 0; }
   border-collapse: collapse;
   font-family: var(--font-mono);
   font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .t-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .t-panel {
+    padding: 15px 10px;
+  }
 }
 
 .t-table th, .t-table td {

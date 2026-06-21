@@ -138,7 +138,7 @@ export const EVENT = {
     title: { prefix: "FREQUENTLY", highlight: "ASKED" },
     items: [
       { q: "Who can participate?", a: "Any student from any college or university can participate. The hackathon is open to all engineering and technology students across disciplines." },
-      { q: "What is the team size?", a: "Teams must have a minimum of 2 and a maximum of 4 members. Solo participation is not allowed." },
+      { q: "What is the team size?", a: "Teams must have a minimum of 1 and a maximum of 4 members." },
       { q: "What is the registration fee?", a: "The registration fee is ₹899 per person. Scan the QR code or contact the coordinators to register." },
       { q: "Will food and accommodation be provided?", a: "Yes! Food will be provided throughout the 36-hour event. Accommodation arrangements will be shared upon registration confirmation." },
       { q: "What should I bring?", a: "Bring your laptop, chargers, power banks, and any hardware you plan to use. A valid college ID is mandatory for check-in." },
