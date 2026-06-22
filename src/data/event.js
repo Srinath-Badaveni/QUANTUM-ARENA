@@ -99,23 +99,23 @@ export const EVENT = {
       { id: "t3", label: "AUG 08" }
     ],
     items: [
-      { time: "09:00 AM", title: "Registration & Check-In", desc: "Report, collect kits, set up your arena station.", day: "Day 1 — Aug 06" },
-      { time: "11:00 AM", title: "Opening Ceremony", desc: "Problem statements released. The clock starts. No turning back.", day: "Day 1 — Aug 06" },
-      { time: "11:00 AM", title: "⚡ HACK BEGINS", desc: "36 hours of pure adrenaline. Code. Build. Solve. Survive.", day: "Aug 06 → Aug 08", featured: true },
-      { time: "11:00 PM", title: "Mid-Night Mentoring", desc: "Expert mentors available. Fuel up, debug, push through.", day: "Day 1 Night — Aug 06" },
-      { time: "06:00 AM", title: "Progress Check", desc: "Jury walkthrough. Show what you've built. Iterate fast.", day: "Day 2 — Aug 07" },
-      { time: "11:00 AM", title: "⏱ SUBMISSION DEADLINE", desc: "Final submissions locked. Commit your last line of code.", day: "Day 3 — Aug 08", featured: true },
-      { time: "02:00 PM", title: "Final Presentations", desc: "Demo your project to the judges. 5 minutes. Make it count.", day: "Day 3 — Aug 08" },
-      { time: "05:00 PM", title: "🏆 Results & Closing", desc: "Winners crowned. Only the strongest survive the Arena.", day: "Day 3 — Aug 08" }
+      { title: "Check-In", desc: "Report, collect kits, set up your arena station.", day: "Day 1 — Aug 06" },
+      { title: "Opening Ceremony", desc: "Problem statements released. The clock starts. No turning back.", day: "Day 1 — Aug 06" },
+      { title: "⚡ HACK BEGINS", desc: "36 hours of pure adrenaline. Code. Build. Solve. Survive.", day: "Aug 06 → Aug 08", featured: true },
+      { title: "Mid-Night Mentoring", desc: "Expert mentors available. Fuel up, debug, push through.", day: "Day 1 Night — Aug 06" },
+      { title: "Progress Check", desc: "Jury walkthrough. Show what you've built. Iterate fast.", day: "Day 2 — Aug 07" },
+      { title: "⏱ SUBMISSION DEADLINE", desc: "Final submissions locked. Commit your last line of code.", day: "Day 3 — Aug 08", featured: true },
+      { title: "Final Presentations", desc: "Demo your project to the judges. 5 minutes. Make it count.", day: "Day 3 — Aug 08" },
+      { title: "🏆 Results & Closing", desc: "Winners crowned. Only the strongest survive the Arena.", day: "Day 3 — Aug 08" }
     ]
   },
   prizes: {
     tag: "// PRIZE_POOL",
     title: { prefix: "WINNERS", highlight: "TAKE ALL" },
     items: [
-      { class: "second", rank: "02", crown: "🥈", title: "1ST RUNNER UP", amount: "₹ TBA", perks: ["+ Certificates", "+ Goodies", "+ Internship Referrals"] },
-      { class: "first", rank: "01", crown: "👑", title: "WINNER", amount: "₹ TBA", badge: "CHAMPIONS", perks: ["+ Trophies", "+ Certificates", "+ Goodies", "+ Premium Goodies"] },
-      { class: "third", rank: "03", crown: "🥉", title: "2ND RUNNER UP", amount: "₹ TBA", perks: ["+ Certificates", "+ Goodies"] }
+      { class: "second", rank: "02", crown: "🥈", title: "1ST RUNNER UP", amount: "₹ TBA", perks: ["+ Certificates"] },
+      { class: "first", rank: "01", crown: "👑", title: "WINNER", amount: "₹ TBA", badge: "CHAMPIONS", perks: ["+ Trophies", "+ Certificates"] },
+      { class: "third", rank: "03", crown: "🥉", title: "2ND RUNNER UP", amount: "₹ TBA", perks: ["+ Certificates"] }
     ],
     note: "* Exact prize amounts will be announced at the opening ceremony. All participants receive participation certificates."
   },
@@ -123,7 +123,7 @@ export const EVENT = {
     tag: "// ARENA_RULES",
     title: { prefix: "RULES OF THE", highlight: "ARENA" },
     items: [
-      { num: "R01", text: "Teams of 2–4 members. Solo entries not permitted." },
+      { num: "R01", text: "Teams of 1–3 members. Solo entries are permitted." },
       { num: "R02", text: "All code must be written during the hackathon. No pre-built projects." },
       { num: "R03", text: "Open source libraries and APIs are allowed. Credit all third-party tools." },
       { num: "R04", text: "Projects must align with one of the six designated tech tracks." },
@@ -138,7 +138,7 @@ export const EVENT = {
     title: { prefix: "FREQUENTLY", highlight: "ASKED" },
     items: [
       { q: "Who can participate?", a: "Any student from any college or university can participate. The hackathon is open to all engineering and technology students across disciplines." },
-      { q: "What is the team size?", a: "Teams must have a minimum of 1 and a maximum of 4 members." },
+      { q: "What is the team size?", a: "Teams must have a minimum of 1 and a maximum of 3 members." },
       { q: "What is the registration fee?", a: "The registration fee is ₹899 per person. Scan the QR code or contact the coordinators to register." },
       { q: "Will food and accommodation be provided?", a: "Yes! Food will be provided throughout the 36-hour event. Accommodation arrangements will be shared upon registration confirmation." },
       { q: "What should I bring?", a: "Bring your laptop, chargers, power banks, and any hardware you plan to use. A valid college ID is mandatory for check-in." },
@@ -174,7 +174,7 @@ export const EVENT = {
       "AI / Machine Learning", "Cloud Computing", "Cybersecurity"
     ],
     sizes: [
-      "1 Member", "2 Members", "3 Members", "4 Members"
+      "1 Member", "2 Members", "3 Members"
     ],
     branches: [
       "CSE", "CSD", "CSM", "IT", "CIVIL", "MECH", "ECE", "EEE", "Other"

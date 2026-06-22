@@ -15,9 +15,8 @@ export default function Team() {
               {group.members.map((member, j) => (
                 <div key={j} style={{ display: 'contents' }}>
                   <div className="coord-name">
-                    {member.name} {member.num && <span className="coord-num">{member.num}</span>}
+                    {member.name} {member.sub && <span style={{fontSize: '0.8em', opacity: 0.8}}>{member.sub}</span>} {member.num && <span className="coord-num">{member.num}</span>}
                   </div>
-                  {member.sub && <div className="coord-sub">{member.sub}</div>}
                 </div>
               ))}
             </div>

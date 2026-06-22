@@ -59,6 +59,12 @@ app.post(
         track,
         size,
         paymentId,
+        member2Name,
+        member2Phone,
+        member2College,
+        member3Name,
+        member3Phone,
+        member3College,
       } = req.body;
 
       // Check if files were uploaded
@@ -111,6 +117,12 @@ app.post(
         track,
         size,
         paymentId,
+        member2Name,
+        member2Phone,
+        member2College,
+        member3Name,
+        member3Phone,
+        member3College,
         paymentScreenshotUrl,
         idPhotoUrl,
       });

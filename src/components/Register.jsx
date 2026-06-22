@@ -248,6 +248,44 @@ export default function Register() {
                     ))}
                   </select>
                 </div>
+                {sizeNumber >= 2 && (
+                  <>
+                    <div style={{ marginTop: "1rem", marginBottom: "0.5rem", fontWeight: "bold", color: "var(--red)", fontSize: "0.9rem" }}>MEMBER 2 DETAILS</div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>NAME (MEMBER 2) *</label>
+                        <input type="text" name="member2Name" placeholder="Full name" required />
+                      </div>
+                      <div className="form-group">
+                        <label>PHONE NO *</label>
+                        <input type="tel" name="member2Phone" placeholder="10-digit mobile number" required />
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <label>COLLEGE (MEMBER 2)</label>
+                      <input type="text" name="member2College" placeholder="Institution" />
+                    </div>
+                  </>
+                )}
+                {sizeNumber >= 3 && (
+                  <>
+                    <div style={{ marginTop: "1rem", marginBottom: "0.5rem", fontWeight: "bold", color: "var(--red)", fontSize: "0.9rem" }}>MEMBER 3 DETAILS</div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>NAME (MEMBER 3) *</label>
+                        <input type="text" name="member3Name" placeholder="Full name" required />
+                      </div>
+                      <div className="form-group">
+                        <label>PHONE NO *</label>
+                        <input type="tel" name="member3Phone" placeholder="10-digit mobile number" required />
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <label>COLLEGE (MEMBER 3)</label>
+                      <input type="text" name="member3College" placeholder="Institution" />
+                    </div>
+                  </>
+                )}
 
                 <div
                   style={{
@@ -347,11 +385,6 @@ export default function Register() {
                     ? "PROCESSING REGISTRATION..."
                     : "ENTER THE ARENA →"}
                 </button>
-                <div className="form-note">
-                  * Registration fee {EVENT.registration.currency}
-                  {EVENT.registration.fee}/{EVENT.registration.per} collected at
-                  venue on check-in.
-                </div>
               </form>
             ) : null}
             {status && status.type === "success" && (
