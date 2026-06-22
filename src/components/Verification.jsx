@@ -143,11 +143,27 @@ export default function Verification() {
       <div className="t-panel" style={{marginTop: '20px'}}>
         <div className="panel-title">// TEAM REGISTRATIONS</div>
         
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px', borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '15px', borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>
           <button onClick={() => setCurrentTab('PENDING')} className="btn-ghost" style={{ padding: '5px 15px', background: currentTab === 'PENDING' ? 'var(--red)' : 'transparent', color: currentTab === 'PENDING' ? '#fff' : 'var(--text)', borderColor: currentTab === 'PENDING' ? 'var(--red)' : 'var(--border)' }}>PENDING</button>
           <button onClick={() => setCurrentTab('APPROVED')} className="btn-ghost" style={{ padding: '5px 15px', background: currentTab === 'APPROVED' ? '#0f0' : 'transparent', color: currentTab === 'APPROVED' ? '#000' : 'var(--text)', borderColor: currentTab === 'APPROVED' ? '#0f0' : 'var(--border)' }}>APPROVED</button>
           <button onClick={() => setCurrentTab('REJECTED')} className="btn-ghost" style={{ padding: '5px 15px', background: currentTab === 'REJECTED' ? '#f00' : 'transparent', color: currentTab === 'REJECTED' ? '#fff' : 'var(--text)', borderColor: currentTab === 'REJECTED' ? '#f00' : 'var(--border)' }}>REJECTED</button>
         </div>
+
+        {(() => {
+          const filteredRegs = registrations.filter(r => r.status === currentTab);
+          const totalTeams = filteredRegs.length;
+          const totalMembers = filteredRegs.reduce((acc, reg) => {
+            const sizeStr = reg.size || "1 Member";
+            const num = parseInt(sizeStr.split(" ")[0]) || 1;
+            return acc + num;
+          }, 0);
+          return (
+            <div style={{ display: 'flex', gap: '30px', marginBottom: '20px', padding: '15px', background: 'var(--bg2)', borderRadius: '4px', border: '1px solid var(--border)' }}>
+              <div><span style={{color: 'var(--text-dim)'}}>TEAMS ({currentTab}):</span> <span style={{fontSize: '1.2em', fontWeight: 'bold', marginLeft: '10px', color: 'var(--red)'}}>{totalTeams}</span></div>
+              <div><span style={{color: 'var(--text-dim)'}}>MEMBERS ({currentTab}):</span> <span style={{fontSize: '1.2em', fontWeight: 'bold', marginLeft: '10px', color: 'var(--red)'}}>{totalMembers}</span></div>
+            </div>
+          );
+        })()}
 
         {loading ? (
           <div style={{color: '#555', fontStyle:'italic'}}>Loading records...</div>

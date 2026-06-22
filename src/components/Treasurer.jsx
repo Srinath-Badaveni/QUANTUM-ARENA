@@ -9,6 +9,7 @@ export default function Treasurer() {
   const [error, setError] = useState('');
   
   const [expenses, setExpenses] = useState([]);
+  const [totalIncome, setTotalIncome] = useState(0);
   const [desc, setDesc] = useState('');
   const [amount, setAmount] = useState('');
   const [paidBy, setPaidBy] = useState('Rajesh');
@@ -34,7 +35,12 @@ export default function Treasurer() {
       });
       if (res.ok) {
         const data = await res.json();
-        setExpenses(data);
+        if (Array.isArray(data)) {
+          setExpenses(data);
+        } else {
+          setExpenses(data.transactions || []);
+          setTotalIncome(data.totalIncome || 0);
+        }
       }
     } catch (err) {
       console.error('Failed to fetch ledger:', err);
@@ -195,6 +201,10 @@ export default function Treasurer() {
 
         <div className="t-panel">
           <div className="panel-title">// LEDGER SUMMARY</div>
+          <div className="ledger-stat" style={{borderBottom: '1px solid var(--border)', paddingBottom: '15px', marginBottom: '15px'}}>
+            <span>REGISTRATIONS COLLECTION:</span>
+            <span className="green">₹{totalIncome.toFixed(2)}</span>
+          </div>
           <div className="ledger-stat" style={{borderBottom: 'none', marginBottom: '0'}}>
             <span>TOTAL EXPENDITURE:</span>
             <span className="red">₹{totalExpenses.toFixed(2)}</span>

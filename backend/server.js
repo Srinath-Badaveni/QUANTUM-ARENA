@@ -200,7 +200,16 @@ app.post("/api/treasurer/login", (req, res) => {
 app.get("/api/treasurer/ledger", verifyTreasurerToken, async (req, res) => {
   try {
     const transactions = await Transaction.find().sort({ date: -1 });
-    res.status(200).json(transactions);
+    
+    const approvedRegs = await Registration.find({ status: "APPROVED" });
+    let totalIncome = 0;
+    approvedRegs.forEach(reg => {
+      const sizeStr = reg.size || "1 Member";
+      const num = parseInt(sizeStr.split(" ")[0]) || 1;
+      totalIncome += num * 899;
+    });
+
+    res.status(200).json({ transactions, totalIncome });
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch ledger" });
   }

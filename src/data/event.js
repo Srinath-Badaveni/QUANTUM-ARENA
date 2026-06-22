@@ -158,7 +158,7 @@ export const EVENT = {
     groups: [
       { title: "Chief Patrons", members: [{ name: "Dr. T. Harinath Reddy" }, { name: "Sri. T. Amarnath Reddy" }] },
       { title: "Patron", members: [{ name: "Dr. A. Ramaswami Reddy", sub: "(Principal)" }] },
-      { title: "Convenor", members: [{ name: "Dr. Manjunath Gadiparthi" }] },
+      { title: "Convenor", members: [{ name: "Dr. Manjunath Gadiparthi", sub: "(Head of the Department, Computer Science and Engineering)" }] },
       { title: "Staff Coordinators", members: [{ name: "K Naga Maha Lakshmi" }, { name: "P Laxmi Prasanna" }, { name: "P Kishore" }, { name: "B Srikanth" }] },
       { title: "Student Coordinators", members: [
         { name: "Ushaswini", num: "7093317923", sub: "(President)" },

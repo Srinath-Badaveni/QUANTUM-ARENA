@@ -79,7 +79,7 @@ export default function ApprovedList() {
               <tr style={{ background: '#eee', borderBottom: '2px solid #ccc' }}>
                 <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ccc' }}>S.NO</th>
                 <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ccc' }}>TEAM NAME</th>
-                <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ccc' }}>LEADER / CONTACT</th>
+                <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ccc' }}>TEAM MEMBERS & CONTACTS</th>
                 <th style={{ padding: '10px', textAlign: 'left', border: '1px solid #ccc' }}>COLLEGE / BRANCH</th>
                 <th style={{ padding: '10px', textAlign: 'center', border: '1px solid #ccc' }}>SIZE</th>
                 <th style={{ padding: '10px', textAlign: 'center', border: '1px solid #ccc' }}>CHECK-IN SGN</th>
@@ -91,12 +91,14 @@ export default function ApprovedList() {
                   <td style={{ padding: '10px', border: '1px solid #ccc', textAlign: 'center' }}>{index + 1}</td>
                   <td style={{ padding: '10px', border: '1px solid #ccc', fontWeight: 'bold' }}>{reg.teamName}</td>
                   <td style={{ padding: '10px', border: '1px solid #ccc' }}>
-                    <div>{reg.leaderName}</div>
-                    <div style={{ fontSize: '0.85em', color: '#555' }}>{reg.phone}</div>
+                    <div style={{ marginBottom: '4px' }}><strong>L:</strong> {reg.leaderName} <span style={{ fontSize: '0.85em', color: '#555' }}>({reg.phone})</span></div>
+                    {reg.member2Name && <div style={{ marginBottom: '4px' }}><strong>M2:</strong> {reg.member2Name} <span style={{ fontSize: '0.85em', color: '#555' }}>({reg.member2Phone})</span></div>}
+                    {reg.member3Name && <div><strong>M3:</strong> {reg.member3Name} <span style={{ fontSize: '0.85em', color: '#555' }}>({reg.member3Phone})</span></div>}
                   </td>
                   <td style={{ padding: '10px', border: '1px solid #ccc' }}>
-                    <div>{reg.college || 'N/A'}</div>
-                    <div style={{ fontSize: '0.85em', color: '#555' }}>{reg.branch} - {reg.year}</div>
+                    <div style={{ marginBottom: '4px' }}><strong>L:</strong> {reg.college || 'N/A'} <span style={{ fontSize: '0.85em', color: '#555' }}>({reg.branch} - {reg.year})</span></div>
+                    {reg.member2Name && <div style={{ marginBottom: '4px' }}><strong>M2:</strong> {reg.member2College || 'N/A'}</div>}
+                    {reg.member3Name && <div><strong>M3:</strong> {reg.member3College || 'N/A'}</div>}
                   </td>
                   <td style={{ padding: '10px', border: '1px solid #ccc', textAlign: 'center' }}>{reg.size}</td>
                   <td style={{ padding: '10px', border: '1px solid #ccc', width: '120px' }}></td>
@@ -115,11 +117,15 @@ export default function ApprovedList() {
       {/* CSS for printing */}
       <style>{`
         @media print {
-          body { background: #fff !important; }
+          @page { size: portrait; margin: 10mm; }
+          body { background: #fff !important; font-size: 11px !important; }
           .scanlines, .t-nav, .no-print { display: none !important; }
-          .treasurer-container { box-shadow: none !important; padding: 0 !important; }
-          table { width: 100% !important; border: 1px solid #000; }
-          th, td { border: 1px solid #000 !important; padding: 8px !important; color: #000 !important; }
+          .treasurer-container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; }
+          table { width: 100% !important; border: 1px solid #000; font-size: 11px !important; }
+          th, td { border: 1px solid #000 !important; padding: 4px 6px !important; color: #000 !important; line-height: 1.2 !important; }
+          td div { margin-bottom: 2px !important; }
+          h1 { font-size: 18px !important; margin: 0 !important; }
+          h3 { font-size: 14px !important; margin: 0 0 10px 0 !important; }
         }
       `}</style>
     </div>
